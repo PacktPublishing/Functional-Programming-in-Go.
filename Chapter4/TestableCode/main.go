@@ -1,22 +1,13 @@
 package main
 
 import (
-	"fmt"
+	"math/rand"
+
+	"github.com/PacktPublishing/Chapter4/TestableCode/player"
 )
 
-type Player string
-
-const (
-	PlayerOne Player = "Remi"
-	PlayerTwo Player = "Yvonne"
-)
-
-func PlayerSelectPure(i int) (Player, error) {
-	switch i {
-	case 0:
-		return PlayerOne, nil
-	case 1:
-		return PlayerTwo, nil
-	}
-	return Player(""), fmt.Errorf("no player matchin %v", i)
+func main() {
+	random := rand.Intn(2)
+	player.PlayerSelectPure(random)
+	// start the game
 }
