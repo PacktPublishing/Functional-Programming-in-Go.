@@ -16,5 +16,5 @@ func PlayerSelectPure(i int) (Player, error) {
 	case 1:
 		return PlayerTwo, nil
 	}
-	return Player(""), fmt.Errorf("no player matchin %v", i)
+	return Player(""), fmt.Errorf("no player matching input %v", i)
 }
