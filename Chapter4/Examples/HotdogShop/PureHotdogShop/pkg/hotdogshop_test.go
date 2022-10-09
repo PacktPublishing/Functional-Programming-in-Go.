@@ -1,13 +1,16 @@
 package pkg
 
-import "testing"
+import (
+	"errors"
+	"testing"
+)
 
 var (
 	testChargeStruct = []struct {
 		inputCard  CreditCard
 		amount     int
 		outputCard CreditCard
-		err        error
+		err        CreditError
 	}{
 		{
 			CreditCard{1000},
@@ -24,19 +27,18 @@ var (
 		{
 			CreditCard{20},
 			1000,
-			CreditCard{},
-			nil,
+			CreditCard{20},
+			NOT_ENOUGH_CREDIT,
 		},
 	}
 )
 
-func testCharge(t *testing.T) {
-
+func TestCharge(t *testing.T) {
 	for _, test := range testChargeStruct {
 		t.Run("", func(t *testing.T) {
 			output, err := charge(test.inputCard, test.amount)
-			if output != test.outputCard || (test.err == nil && err != nil) {
-				t.Errorf("expected %v but got %v\n", test.outputCard, output)
+			if output != test.outputCard || !errors.Is(err, test.err) {
+				t.Errorf("expected %v but got %v\n, error expected %v but got %v", test.outputCard, output, test.err, err)
 			}
 		})
 	}
