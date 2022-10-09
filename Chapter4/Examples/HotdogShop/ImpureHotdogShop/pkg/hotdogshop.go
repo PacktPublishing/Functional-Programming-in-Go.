@@ -11,7 +11,7 @@ type CreditCard struct {
 type Hotdog struct{}
 
 func (c *CreditCard) charge(amount int) {
-	if amount < c.credit {
+	if amount <= c.credit {
 		c.credit -= amount
 	} else {
 		panic("no more credit")
