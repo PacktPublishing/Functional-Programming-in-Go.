@@ -12,15 +12,21 @@ type Hotdog struct {
 
 type CreditError error
 
+type PaymentFunc func(CreditCard, int) (CreditCard, CreditError)
+
 var (
 	NOT_ENOUGH_CREDIT CreditError = CreditError(errors.New("not enough credit"))
 )
 
-func newHotdog() Hotdog {
+func NewCreditCard(initialCredit int) CreditCard {
+	return CreditCard{credit: initialCredit}
+}
+
+func NewHotdog() Hotdog {
 	return Hotdog{price: 4}
 }
 
-func charge(c CreditCard, amount int) (CreditCard, CreditError) {
+func Charge(c CreditCard, amount int) (CreditCard, CreditError) {
 	if amount <= c.credit {
 		c.credit -= amount
 		return c, nil
@@ -28,10 +34,10 @@ func charge(c CreditCard, amount int) (CreditCard, CreditError) {
 	return c, NOT_ENOUGH_CREDIT
 }
 
-func orderHotdog(c CreditCard) (Hotdog, func() (CreditCard, error)) {
-	hotdog := newHotdog()
+func OrderHotdog(c CreditCard, pay PaymentFunc) (Hotdog, func() (CreditCard, error)) {
+	hotdog := NewHotdog()
 	chargeFunc := func() (CreditCard, error) {
-		return charge(c, hotdog.price)
+		return pay(c, hotdog.price)
 	}
-	return Hotdog{}, chargeFunc
+	return hotdog, chargeFunc
 }

@@ -20,15 +20,15 @@ var (
 		},
 		{
 			CreditCard{20},
-			5,
-			CreditCard{15},
+			20,
+			CreditCard{0},
 			nil,
 		},
 		{
-			CreditCard{20},
+			CreditCard{150},
 			1000,
-			CreditCard{20},
-			NOT_ENOUGH_CREDIT,
+			CreditCard{150},   // no money is withdrawn
+			NOT_ENOUGH_CREDIT, // payment fails with this error
 		},
 	}
 )
@@ -36,11 +36,34 @@ var (
 func TestCharge(t *testing.T) {
 	for _, test := range testChargeStruct {
 		t.Run("", func(t *testing.T) {
-			output, err := charge(test.inputCard, test.amount)
+			output, err := Charge(test.inputCard, test.amount)
 			if output != test.outputCard || !errors.Is(err, test.err) {
-				t.Errorf("expected %v but got %v\n, error expected %v but got %v", test.outputCard, output, test.err, err)
+				t.Errorf("expected %v but got %v\n, error expected %v but got %v",
+					test.outputCard, output, test.err, err)
 			}
 		})
 	}
+}
 
+func TestOrderHotdog(t *testing.T) {
+	testCC := CreditCard{1000}
+	calledInnerFunction := false
+	mockPayment := func(c CreditCard, input int) (CreditCard, CreditError) {
+		calledInnerFunction = true
+		testCC.credit -= input
+		return testCC, nil
+	}
+
+	hotdog, resultF := OrderHotdog(testCC, mockPayment)
+	if hotdog != NewHotdog() {
+		t.Errorf("expected %v but got %v\n", NewHotdog(), hotdog)
+	}
+
+	_, err := resultF()
+	if err != nil {
+		t.Errorf("encountered %v but expected no error\n", err)
+	}
+	if calledInnerFunction == false {
+		t.Errorf("Inner function did not get called\n")
+	}
 }
