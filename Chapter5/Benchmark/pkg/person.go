@@ -5,6 +5,7 @@ type Person struct {
 	age  int
 }
 
+//go:noinline
 func immutableCreatePerson() Person {
 	p := Person{}
 	p = immutableSetName(p, "Sean")
@@ -12,16 +13,19 @@ func immutableCreatePerson() Person {
 	return p
 }
 
+//go:noinline
 func immutableSetName(p Person, name string) Person {
 	p.name = name
 	return p
 }
 
+//go:noinline
 func immutableSetAge(p Person, age int) Person {
 	p.age = age
 	return p
 }
 
+//go:noinline
 func mutableCreatePerson() *Person {
 	p := &Person{}
 	mutableSetName(p, "Tom")
@@ -29,10 +33,12 @@ func mutableCreatePerson() *Person {
 	return p
 }
 
+//go:noinline
 func mutableSetName(p *Person, name string) {
 	p.name = name
 }
 
+//go:noinline
 func mutableSetAge(p *Person, age int) {
 	p.age = age
 }
