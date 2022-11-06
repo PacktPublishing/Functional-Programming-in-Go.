@@ -6,8 +6,40 @@ import (
 	"github.com/PacktPublishing/Chapter6/pkg"
 )
 
-func main() {
+type (
+	Name   string
+	Breed  int
+	Gender int
+)
 
-	input := []int{1, 2, 3}
-	fmt.Printf("%v\n", pkg.Sum(input))
+type Dog struct {
+	Name   Name
+	Breed  Breed
+	Gender Gender
+}
+
+// define possible breeds
+const (
+	Bulldog Breed = iota
+	Havanese
+	Cavalier
+	Poodle
+)
+
+// define possible genders
+const (
+	Male Gender = iota
+	Female
+)
+
+func main() {
+	dogs := []Dog{
+		Dog{"Bucky", Havanese, Male},
+		Dog{"Tipsy", Poodle, Female},
+	}
+	result := pkg.Filter(dogs, func(d Dog) bool {
+		return d.Breed == Havanese
+	})
+	fmt.Printf("%v\n", result)
+
 }
