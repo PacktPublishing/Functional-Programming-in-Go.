@@ -43,13 +43,22 @@ func main() {
 	fmt.Printf("%v\n", result)
 
 	takeWhileDemo()
+	dropWhileDemo()
 
 }
 
 func takeWhileDemo() {
 	ints := []int{1, 1, 2, 3, 5, 8, 13}
-	pkg.TakeWhile(ints, func(i int) bool {
-		return i%2 == 1
+	result := pkg.TakeWhile(ints, func(i int) bool {
+		return i%2 != 0
 	})
-	fmt.Printf("%v\n", ints)
+	fmt.Printf("%v\n", result)
+}
+
+func dropWhileDemo() {
+	ints := []int{1, 1, 2, 3, 5, 8, 13}
+	result := pkg.DropWhile(ints, func(i int) bool {
+		return i%2 != 0
+	})
+	fmt.Printf("%v\n", result)
 }
