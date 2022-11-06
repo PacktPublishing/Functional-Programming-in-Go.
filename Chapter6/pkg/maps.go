@@ -6,8 +6,8 @@ type MapFunc[A any] func(A) A
 func Map[A any](input []A, m MapFunc[A]) []A {
 	output := make([]A, len(input))
 
-	for _, element := range input {
-		output = append(output, m(element))
+	for i, element := range input {
+		output[i] = m(element)
 	}
 
 	return output
@@ -17,8 +17,8 @@ func Map[A any](input []A, m MapFunc[A]) []A {
 // container
 func FMap[A, B any](input []A, m func(A) B) []B {
 	output := make([]B, len(input))
-	for _, element := range input {
-		output = append(output, m(element))
+	for i, element := range input {
+		output[i] = m(element)
 	}
 	return output
 }

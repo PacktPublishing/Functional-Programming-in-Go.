@@ -44,7 +44,7 @@ func main() {
 
 	takeWhileDemo()
 	dropWhileDemo()
-
+	multiplyMapDemo()
 }
 
 func takeWhileDemo() {
@@ -59,6 +59,14 @@ func dropWhileDemo() {
 	ints := []int{1, 1, 2, 3, 5, 8, 13}
 	result := pkg.DropWhile(ints, func(i int) bool {
 		return i%2 != 0
+	})
+	fmt.Printf("%v\n", result)
+}
+
+func multiplyMapDemo() {
+	ints := []int{1, 1, 2, 3, 5, 8, 13}
+	result := pkg.Map(ints, func(i int) int {
+		return i * 2
 	})
 	fmt.Printf("%v\n", result)
 }
