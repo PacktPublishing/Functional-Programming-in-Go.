@@ -47,6 +47,8 @@ func main() {
 	multiplyMapDemo()
 	dogMapDemo()
 	flatMapDemo()
+	sumDemo()
+	reduceWithStartDemo()
 }
 
 func takeWhileDemo() {
@@ -97,6 +99,20 @@ func flatMapDemo() {
 			out = append(out, i)
 		}
 		return out
+	})
+	fmt.Printf("%v\n", result)
+}
+
+func sumDemo() {
+	ints := []int{1, 2, 3, 4}
+	result := pkg.Sum(ints)
+	fmt.Printf("%v\n", result)
+}
+
+func reduceWithStartDemo() {
+	words := []string{"hello", "world", "universe"}
+	result := pkg.ReduceWithStart(words, "first", func(s1, s2 string) string {
+		return s1 + ", " + s2
 	})
 	fmt.Printf("%v\n", result)
 }
