@@ -45,6 +45,8 @@ func main() {
 	takeWhileDemo()
 	dropWhileDemo()
 	multiplyMapDemo()
+	dogMapDemo()
+	flatMapDemo()
 }
 
 func takeWhileDemo() {
@@ -67,6 +69,34 @@ func multiplyMapDemo() {
 	ints := []int{1, 1, 2, 3, 5, 8, 13}
 	result := pkg.Map(ints, func(i int) int {
 		return i * 2
+	})
+	fmt.Printf("%v\n", result)
+}
+
+func dogMapDemo() {
+	dogs := []Dog{
+		Dog{"Bucky", Havanese, Male},
+		Dog{"Tipsy", Poodle, Female},
+	}
+	result := pkg.Map(dogs, func(d Dog) Dog {
+		if d.Gender == Male {
+			d.Name = "Mr. " + d.Name
+		} else {
+			d.Name = "Mrs. " + d.Name
+		}
+		return d
+	})
+	fmt.Printf("%v\n", result)
+}
+
+func flatMapDemo() {
+	ints := []int{1, 2, 3}
+	result := pkg.FlatMap(ints, func(n int) []int {
+		out := []int{}
+		for i := 0; i < n; i++ {
+			out = append(out, i)
+		}
+		return out
 	})
 	fmt.Printf("%v\n", result)
 }
