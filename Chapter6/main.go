@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 
 	"github.com/PacktPublishing/Chapter6/pkg"
 )
@@ -49,6 +51,8 @@ func main() {
 	flatMapDemo()
 	sumDemo()
 	reduceWithStartDemo()
+
+	exampleAirlineData()
 }
 
 func takeWhileDemo() {
@@ -115,4 +119,68 @@ func reduceWithStartDemo() {
 		return s1 + ", " + s2
 	})
 	fmt.Printf("%v\n", result)
+}
+
+type Entry struct {
+	Airport struct {
+		Code string `json:"Code"`
+		Name string `json:"Name"`
+	} `json:"Airport"`
+
+	// time
+	Time struct {
+		Label     string `json:"Label"`
+		Month     uint   `json:"Month"`
+		MonthName string `json:"Month Name"`
+		Year      uint   `json:"Year"`
+	} `json:"Time"`
+
+	// statistics
+	Statistics struct {
+		NumberOfDelays struct {
+			Carrier                int `json:"Carrier"`
+			LateAircraft           int `json:"Late Aircraft"`
+			NationalAviationSystem int `json:"National Aviation System"`
+			Security               int `json:"Security"`
+			Weather                int `json:"Weather"`
+		} `json:"# of Delays"`
+		// Carriers
+		Carriers struct {
+			Names string `json:"Names"`
+			Total int    `json:"Total"`
+		} `json:"Carriers"`
+
+		// Flights
+		Flights struct {
+			Cancelled int `json:"Cancelled"`
+			Delayed   int `json:"Delayed"`
+			Diverted  int `json:"Diverted"`
+			OnTime    int `json:"On Time"`
+			Total     int `json:"Total"`
+		} `json:"Flights"`
+
+		MinutesDelayed struct {
+			Carrier                int `json:"Carrier"`
+			LateAircraft           int `json:"Late Aircraft"`
+			NationalAviationSystem int `json:"National Aviation System"`
+			Security               int `json:"Security"`
+			Weather                int `json:"Weather"`
+		} `json:"Minutes Delayed"`
+	} `json:"Statistics"`
+}
+
+func exampleAirlineData() {
+	bytes, err := ioutil.ReadFile("./resources/airlines.json")
+	if err != nil {
+		panic(err)
+	}
+
+	var entries []Entry
+	err = json.Unmarshal(bytes, &entries)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%v\n", entries[0])
+
 }
