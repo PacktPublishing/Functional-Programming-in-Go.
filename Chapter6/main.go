@@ -169,7 +169,7 @@ type Entry struct {
 	} `json:"Statistics"`
 }
 
-func exampleAirlineData() {
+func getEntries() []Entry {
 	bytes, err := ioutil.ReadFile("./resources/airlines.json")
 	if err != nil {
 		panic(err)
@@ -180,9 +180,11 @@ func exampleAirlineData() {
 	if err != nil {
 		panic(err)
 	}
+	return entries
+}
 
-	fmt.Printf("%v\n", entries[0])
-
+func exampleAirlineData() {
+	entries := getEntries()
 	SEA := pkg.Filter(entries, func(e Entry) bool {
 		return e.Airport.Code == "SEA"
 	})
