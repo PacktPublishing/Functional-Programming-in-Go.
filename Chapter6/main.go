@@ -183,4 +183,16 @@ func exampleAirlineData() {
 
 	fmt.Printf("%v\n", entries[0])
 
+	SEA := pkg.Filter(entries, func(e Entry) bool {
+		return e.Airport.Code == "SEA"
+	})
+
+	WeatherDelayHours := pkg.FMap(SEA, func(e Entry) int {
+		return e.Statistics.MinutesDelayed.Weather / 60
+	})
+
+	totalWeatherDelay := pkg.Sum(WeatherDelayHours)
+
+	fmt.Printf("%v\n", totalWeatherDelay)
+
 }

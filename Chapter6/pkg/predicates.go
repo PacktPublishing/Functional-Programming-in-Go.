@@ -9,8 +9,7 @@ this package contains predicate based functions
 type Predicate[A any] func(A) bool
 
 func Filter[A any](input []A, pred Predicate[A]) []A {
-	output := make([]A, len(input))
-
+	output := []A{}
 	for _, element := range input {
 		if pred(element) {
 			output = append(output, element)
