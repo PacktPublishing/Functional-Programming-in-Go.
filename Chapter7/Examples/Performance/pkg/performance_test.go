@@ -2,14 +2,16 @@ package pkg
 
 import "testing"
 
-func BenchmarkIterative100(b *testing.B) {
+const RUNS = 20
+
+func BenchmarkIterative(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		IterativeFact(10)
+		IterativeFact(RUNS)
 	}
 }
 
-func BenchmarkRecursive100(b *testing.B) {
+func BenchmarkRecursive(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		RecursiveFact(10)
+		RecursiveFact(RUNS)
 	}
 }

@@ -17,6 +17,13 @@ func main() {
 
 	fmt.Printf("%v\n", res)
 
+	i := 0
+	is := LazyTake(10, func() int {
+		curr := i
+		i++
+		return curr
+	})
+	fmt.Println(is)
 }
 
 type ints []int
@@ -45,4 +52,23 @@ func Factorial(n int) int {
 		return 1
 	}
 	return n * Factorial(n-1)
+}
+
+func LazyTake[A any](n int, getNext func() A) []A {
+	collected := []A{}
+
+	for len(collected) < n {
+		collected = append(collected, getNext())
+	}
+
+	return collected
+}
+
+func isPrime(input int) bool {
+	for i := 2; i < i; i++ {
+		if i%input == 0 {
+			return false
+		}
+	}
+	return true
 }
