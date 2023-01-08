@@ -4,13 +4,13 @@ var (
 	alphabet [26]rune = [26]rune{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'}
 )
 
-func indexOf(r rune, rs [26]rune) int {
+func indexOf(r rune, rs [26]rune) (int, bool) {
 	for i := 0; i < len(rs); i++ {
 		if r == rs[i] {
-			return i
+			return i, true
 		}
 	}
-	panic("index not found")
+	return -1, false
 }
 
 type CipherStrategy interface {
@@ -36,10 +36,13 @@ type CaesarCipher struct {
 func (c CaesarCipher) Cipher(input string) string {
 	output := ""
 	for _, r := range input {
-		idx := indexOf(r, alphabet)
-		idx += c.Rotation
-		idx = idx % 26
-		output += string(alphabet[idx])
+		if idx, ok := indexOf(r, alphabet); ok {
+			idx += c.Rotation
+			idx = idx % 26
+			output += string(alphabet[idx])
+		} else {
+			output += string(r)
+		}
 	}
 	return output
 }
@@ -47,10 +50,13 @@ func (c CaesarCipher) Cipher(input string) string {
 func (c CaesarCipher) Decipher(input string) string {
 	output := ""
 	for _, r := range input {
-		idx := indexOf(r, alphabet)
-		idx += (26 - c.Rotation)
-		idx = idx % 26
-		output += string(alphabet[idx])
+		if idx, ok := indexOf(r, alphabet); ok {
+			idx += (26 - c.Rotation)
+			idx = idx % 26
+			output += string(alphabet[idx])
+		} else {
+			output += string(r)
+		}
 	}
 	return output
 }
@@ -61,9 +67,12 @@ type AtbashCipher struct {
 func (a AtbashCipher) Cipher(input string) string {
 	output := ""
 	for _, r := range input {
-		idx := indexOf(r, alphabet)
-		idx = 25 - idx
-		output += string(alphabet[idx])
+		if idx, ok := indexOf(r, alphabet); ok {
+			idx = 25 - idx
+			output += string(alphabet[idx])
+		} else {
+			output += string(r)
+		}
 	}
 	return output
 }
