@@ -37,7 +37,8 @@ func main() {
 	cld := oop.CipherLogDecorator{
 		CipherI: oop.CaesarCipher{Rotation: 10},
 	}
-	ciphered := cld.Cipher("helloworld")
+	svc := oop.CipherService{Strategy: cld}
+	ciphered := svc.Cipher("helloworld")
 	fmt.Println(ciphered)
 
 	caesarCipher := func(input string) string {
