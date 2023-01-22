@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/PacktPublishing/Chapter10/pkg"
 )
@@ -13,8 +14,11 @@ func main() {
 	ints := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
 	output := pkg.ConcurrentFilter(ints, func(i int) bool { return i%2 == 0 }, 3)
+	fmt.Printf("%v\n", output)
 	output = pkg.ConcurrentMap(output, func(i int) int { return i * 2 }, 2)
 	fmt.Printf("%v\n", output)
+	result := pkg.ConcurrentFMap(output, func(i int) string { return "number: " + strconv.Itoa(i) }, 2)
+	fmt.Printf("%v\n", result)
 }
 
 /*
