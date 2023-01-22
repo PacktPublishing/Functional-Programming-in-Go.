@@ -5,7 +5,10 @@ import (
 	"math"
 )
 
-type Predicate[A any] func(A) bool
+type (
+	Predicate[A any] func(A) bool
+	MapFunc[A any]   func(A) A
+)
 
 func Filter[A any](input []A, p Predicate[A], out chan []A) {
 	output := []A{}
@@ -36,6 +39,38 @@ func ConcurrentFilter[A any](input []A, p Predicate[A], batchSize int) []A {
 		filtered := <-out
 		fmt.Printf("got data: %v\n", filtered)
 		output = append(output, filtered...)
+	}
+	return output
+}
+
+// Map is a transformation whereby the type of the element and structure of the container is preserved
+func Map[A any](input []A, m MapFunc[A], out chan []A) {
+	output := make([]A, len(input))
+	for i, element := range input {
+		output[i] = m(element)
+	}
+	out <- output
+}
+
+func ConcurrentMap[A any](input []A, mapFn MapFunc[A], batchSize int) []A {
+	output := []A{}
+
+	out := make(chan []A)
+	threadCount := int(math.Ceil(float64(len(input)) / float64(batchSize)))
+	fmt.Println(threadCount)
+	for i := 0; i < threadCount; i++ {
+		fmt.Println("spun up thread")
+		if ((i + 1) * batchSize) < len(input) {
+			go Map(input[i*batchSize:(i+1)*batchSize], mapFn, out)
+		} else {
+			go Map(input[i*batchSize:], mapFn, out)
+		}
+	}
+
+	for i := 0; i < threadCount; i++ {
+		mapped := <-out
+		fmt.Printf("got data: %v\n", mapped)
+		output = append(output, mapped...)
 	}
 	return output
 }

@@ -12,7 +12,8 @@ type ResponseFunc func(*http.Response)
 func main() {
 	ints := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
-	output := pkg.ConcurrentFilter(ints, func(i int) bool { return i%2 == 0 }, 11)
+	output := pkg.ConcurrentFilter(ints, func(i int) bool { return i%2 == 0 }, 3)
+	output = pkg.ConcurrentMap(output, func(i int) int { return i * 2 }, 2)
 	fmt.Printf("%v\n", output)
 }
 
