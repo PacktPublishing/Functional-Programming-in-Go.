@@ -21,11 +21,15 @@ func main() {
 	fmt.Printf("%v\n", result)
 
 	fmt.Printf("\n\n\n===pipelines===\n")
-	c := pkg.GeneratorNode(1, 2, 3, 4)
-	out := pkg.FilterNode(c, func(i int) bool { return i%2 == 0 })
-	out = pkg.MapNode(out, func(i int) int { return i * 2 })
+	c := pkg.Generator(1, 2, 3, 4)
+	//out := pkg.FilterNode(c, func(i int) bool { return i%2 == 0 })
+	//out = pkg.MapNode(out, func(i int) int { return i * 2 })
 
-	fmt.Println(pkg.CollectorNode(out))
+	out := pkg.ChainPipes(c,
+		pkg.CurriedFilterNode(func(i int) bool { return i%2 == 0 }),
+		pkg.CurriedMapNode(func(i int) int { return i * i }))
+
+	fmt.Println(out)
 }
 
 /*
