@@ -19,6 +19,13 @@ func main() {
 	fmt.Printf("%v\n", output)
 	result := pkg.ConcurrentFMap(output, func(i int) string { return "number: " + strconv.Itoa(i) }, 2)
 	fmt.Printf("%v\n", result)
+
+	fmt.Printf("\n\n\n===pipelines===\n")
+	c := pkg.GeneratorNode(1, 2, 3, 4)
+	out := pkg.FilterNode(c, func(i int) bool { return i%2 == 0 })
+	out = pkg.MapNode(out, func(i int) int { return i * 2 })
+
+	fmt.Println(pkg.CollectorNode(out))
 }
 
 /*
