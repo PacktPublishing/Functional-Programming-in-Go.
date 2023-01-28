@@ -1,6 +1,9 @@
 package pkg
 
-import "fmt"
+import (
+	"io/ioutil"
+	"strings"
+)
 
 type (
 	Node[A any]          func(<-chan A) <-chan A
@@ -38,19 +41,60 @@ func CurriedMapNode[A any](mapFn MapFunc[A]) Node[A] {
 
 // could abstract generators and collectors
 func ChainPipes[A any](in <-chan A, nodes ...Node[A]) []A {
-	var out <-chan A
 	for _, node := range nodes {
-		out = node(in)
-		fmt.Printf("%v\n", out)
+		in = node(in)
 	}
-	return Collector(out)
+	return Collector(in)
 }
 
-func Generator[A any](nums ...A) <-chan A {
+func ChainPipes2[A any](gn GeneratorNode[A], nodes ...Node[A]) []A {
+	in := gn()
+	for _, node := range nodes {
+		in = node(in)
+	}
+	return Collector(in)
+}
+
+func Generator[A any](input ...A) <-chan A {
 	out := make(chan A)
 	go func() {
-		for _, n := range nums {
-			out <- n
+		for _, element := range input {
+			out <- element
+		}
+		close(out)
+	}()
+	return out
+}
+
+func CurriedCat(filepath string) func() <-chan string {
+	return func() <-chan string {
+		out := make(chan string)
+		f, err := ioutil.ReadFile(filepath)
+		if err != nil {
+			panic(err)
+		}
+		go func() {
+			lines := strings.Split(string(f), "\n")
+			for _, line := range lines {
+				out <- line
+			}
+			close(out)
+		}()
+		return out
+	}
+
+}
+
+func Cat(filepath string) <-chan string {
+	out := make(chan string)
+	f, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		panic(err)
+	}
+	go func() {
+		lines := strings.Split(string(f), "\n")
+		for _, line := range lines {
+			out <- line
 		}
 		close(out)
 	}()
