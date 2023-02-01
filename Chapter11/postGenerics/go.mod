@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/elliotchance/pie/v2 v2.3.0
 	github.com/samber/lo v1.37.0
+	github.com/samber/mo v1.8.0
 )
 
 require golang.org/x/exp v0.0.0-20220321173239-a90fa8a75705 // indirect
