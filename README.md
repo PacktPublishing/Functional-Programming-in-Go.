@@ -1,2 +1,2 @@
-# Functional-Programming-in-Golang
-Functional Programming in Golang, published by Packt
+# Functional-Programming-in-Go
+Functional Programming in Go, published by Packt
