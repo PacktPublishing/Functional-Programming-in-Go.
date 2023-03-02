@@ -47,7 +47,7 @@ With the following software and hardware list you can run all code files present
 We also provide a PDF file that has color images of the screenshots/diagrams used in this book. [Click here to download it](https://packt.link/5tPDg).
 
 ### Related products
-* Domain-Driven Design with Golang  [[Packt]](https://www.packtpub.com/product/domain-driven-design-with-golang/9781804613450?utm_source=github&utm_medium=repository&utm_campaign=) [[Amazon]](https://www.amazon.com/dp/B0BNJ8KHYN)
+* Domain-Driven Design with Golang  [[Packt]](https://www.packtpub.com/product/domain-driven-design-with-golang/9781804613450?utm_source=github&utm_medium=repository&utm_campaign=) [[Amazon]](https://www.amazon.com/dp/1804613452)
 
 * Event-Driven Architecture in Golang  [[Packt]](https://www.packtpub.com/product/event-driven-architecture-in-golang/9781803238012?utm_source=github&utm_medium=repository&utm_campaign=) [[Amazon]](https://www.amazon.com/dp/1803238011)
 
