@@ -45,7 +45,7 @@ func sub(a, b int) int {
 }
 
 func mult(a, b int) int {
-	return a + b
+	return a * b
 }
 
 func div(a, b int) int {
